@@ -93,8 +93,8 @@ profile: # ← 此函数位置请勿变动！此为模块更新时备份恢复�
 sniffer:
   enable: true
   force-dns-mapping: true
-  parse-pure-ip: true
-  override-destination: true
+  parse-pure-ip: false
+  override-destination: false
   sniff:
     HTTP:
       ports: [80, 8080-8880]
@@ -119,12 +119,32 @@ tun:
   udp-timeout: 300
   mtu: 9000
   auto-route: true
-  strict-route: true
+  strict-route: false
   auto-redirect: true
   auto-detect-interface: true
   # 如使用黑白名单这里需排除
   # exclude-package 排除 / include-package 包含
   exclude-package:
+    - com.android.captiveportallogin
+    - com.android.networkstack
+    - com.alibaba.android.rimet
+    - com.chaoxing.mobile
+    - com.coolapk.market
+    - com.bilibili.app.in
+    - com.duowan.kiwi
+    - com.jingdong.app.mall
+    - com.max.xiaoheihe
+    - com.netease.uuremote
+    - com.sankuai.meituan.takeoutnew
+    - com.taobao.idlefish
+    - com.taobao.taobao
+    - com.tencent.mm
+    - com.tencent.mobileqq
+    - com.tencent.wemeet.app
+    - com.tencent.wetype
+    - com.xunmeng.pinduoduo
+    - com.ss.android.ugc.aweme
+    - com.ct.client
 #    - com.samsung.android.messaging # 三星专供 ↓ 范围
 #    - com.samsung.android.app.telephonyui
 #    - com.samsung.android.dialer
@@ -149,6 +169,13 @@ dns:
   fake-ip-range: 198.18.0.0/16
   fake-ip-range6: fdfe:dcba:9876::/48
   fake-ip-filter:
+    - '*.lan'
+    - '*.local'
+    - '*.localdomain'
+    - time.windows.com
+    - '*.ntp.org'
+    - '*.pool.ntp.org'
+    - "+.connectivitycheck.gstatic.com"
     - "RULE-SET:CN_域"
     - "RULE-SET:Private_域"
     - "RULE-SET:GoogleFCM_域"
@@ -177,6 +204,7 @@ dns:
   direct-nameserver:
     - 1.12.12.12
     - 223.6.6.6
+    - 192.168.1.1 
   
 # —————————
 proxies:
@@ -221,15 +249,6 @@ proxy-groups:
     proxies:
       - 🌐 本机·本地直连
       - 总模式
-  - name: 小红书
-    icon: "https://cdn.jsdelivr.net/gh/GitMetaio/Surfing@main/app/icon/XiaoHongShu.svg"
-    <<: *proxy_groups
-  - name: 抖音
-    icon: "https://cdn.jsdelivr.net/gh/GitMetaio/Surfing@main/app/icon/DouYin.svg"
-    <<: *proxy_groups
-  - name: BiliBili
-    icon: "https://cdn.jsdelivr.net/gh/GitMetaio/Surfing@main/app/icon/BiliBili.svg"
-    <<: *proxy_groups
   - name: Steam
     icon: "https://cdn.jsdelivr.net/gh/GitMetaio/Surfing@main/app/icon/Steam.svg"
     <<: *proxy_groups
@@ -375,22 +394,6 @@ rule-providers:
     <<: *Domain
     path: ./rules/No-ads-all.mrs
     url: "https://anti-ad.net/mihomo.mrs"
-  XiaoHongShu_域:
-    <<: *Domain
-    path: ./rules/XiaoHongShu.mrs
-    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/xiaohongshu.mrs"
-  DouYin_域:
-    <<: *Domain
-    path: ./rules/DouYin.mrs
-    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/douyin.mrs"
-  BiliBili_域:
-    <<: *Domain
-    path: ./rules/BiliBili.mrs
-    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bilibili.mrs"
-  BiliBili_IP:
-    <<: *IPCIDR
-    path: ./rules/BiliBili_IP.mrs
-    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo-lite/geoip/bilibili.mrs"
   Steam_域:
     <<: *Domain
     path: ./rules/Steam.mrs
@@ -490,13 +493,6 @@ rules:
   - RULE-SET,自定义规则,特殊地址
   - RULE-SET,WebRTC_端/域,WebRTC
   - RULE-SET,No-ads-all_域,广告拦截
-  - PROCESS-NAME,com.ss.android.ugc.aweme,抖音
-  - RULE-SET,DouYin_域,抖音
-  - PROCESS-NAME,com.xingin.xhs,小红书
-  - RULE-SET,XiaoHongShu_域,小红书
-  - PROCESS-NAME,tv.danmaku.bili,BiliBili
-  - RULE-SET,BiliBili_域,BiliBili
-  - RULE-SET,BiliBili_IP,BiliBili,no-resolve
   - RULE-SET,Steam_域,Steam
   - RULE-SET,GitHub_域,GitHub
   - RULE-SET,Discord_域,Discord
